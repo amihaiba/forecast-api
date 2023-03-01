@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Forecast</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container bg-primary rounded mt-2 mb-1 pb-2 justify-content-center">
+    <div class="row text-center">
+        <p class="display-4 text-light pt-2">Weather Forecast</p>
+    </div>
+    <div class="row text-center">
+        <div class="col-4"></div>
+        <div class="col-4">
+        <form class="form-inline" action="/" method="POST">
+            <div class="input-group m-2">
+                <input class="form-control" type="text" name="location" placeholder="Enter city or country" required="">
+                <button class="btn btn-primary btn-outline-light ms-1" type="submit">Search</button>
+            </div>
+        </form>
+            </div>
+        <div class="col-4"></div>
+    </div>
+</div>
+
+{% if status == 0 %}
+<div class="container-sm bg-danger rounded mt-1  mb-1 pt-1 pb-1">
+    <div class="row m-1">
+        <p class="display-6 text-light pt-2 text-start">Location not found</p>
+    </div>
+</div>
+{% elif status == 1 %}
+<div class="container bg-primary rounded mt-1 pt-1 pb-1">
+    <div class="row m-1">
+        <p class="display-6 text-light pt-2 text-start">{{title}}</p>
+    </div>
+    <div class="row m-1">
+        {% for day in range(7) %}
+        <div class="col bg-light rounded m-1 p-1">
+            {{forecast['time'][day]}}<br>
+            Temp:<br>
+            {{forecast['temperature_2m_min'][day]}}°C -
+            {{forecast['temperature_2m_max'][day]}}°C<br>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

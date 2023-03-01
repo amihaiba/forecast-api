@@ -1,0 +1,27 @@
+version: "3"
+services:  
+
+  gunicorn1:
+    build: ./gunicorn
+    networks:
+      - forecast-app
+
+  gunicorn2:
+    build: ./gunicorn
+    networks:
+      - forecast-app
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - forecast-app
+    depends_on:
+      - gunicorn1
+      - gunicorn2
+      
+networks:
+  forecast-app:
+    
