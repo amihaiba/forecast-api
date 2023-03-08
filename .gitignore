@@ -1,0 +1,15 @@
+# Ingore all files
+#*
+
+# Whitelist
+!.gitignore
+!/*.dockerignore
+!/*.py
+!/*.sh
+!/*.html
+!/*.txt
+!/*.conf
+!Jenkinsfile
+
+# Blacklist
+.idea/
