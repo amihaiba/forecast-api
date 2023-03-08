@@ -1,12 +1,22 @@
 pipeline {
-	agent { docker { image 'forecast_builder:1.0 } }
-	stages {
-		stage ('build')
-			steps {
-				sh 'docker version'
-				sh 'docker-compose version'
-				sh 'echo hello'
-			}
-		}
+    agent any
+    stages {
+       stage('build') {
+          steps {
+             echo 'Notify GitLab'
+             updateGitlabCommitStatus name: 'build', state: 'pending'
+             echo 'build step goes here'
+             updateGitlabCommitStatus name: 'build', state: 'success'
+          }
+       }
+       stage(test) {
+           steps {
+               echo 'Notify GitLab'
+               updateGitlabCommitStatus name: 'test', state: 'pending'
+               echo 'test step goes here'
+               updateGitlabCommitStatus name: 'test', state: 'success'
 
-}
+           }
+       }
+    }
+ }
