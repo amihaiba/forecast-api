@@ -5,6 +5,7 @@ pipeline {
 			steps {
 				sh 'docker version'
 				sh 'docker-compose version'
+				sh 'echo hello'
 			}
 		}
 
