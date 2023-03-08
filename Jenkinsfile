@@ -1,22 +1,20 @@
 pipeline {
     agent any
     stages {
-       stage('build') {
+       stage('git') {
           steps {
-             echo 'Notify GitLab'
-             updateGitlabCommitStatus name: 'build', state: 'pending'
-             echo 'build step goes here'
-             updateGitlabCommitStatus name: 'build', state: 'success'
+             echo 'Fetching git repo'
+             git credentialsId: '45551286-fc7b-437b-a6e2-f67305b09ff1', url: 'http://54.198.249.16/gitlab-instance-d4e39dbd/forecast_api'
           }
        }
-       stage(test) {
+       stage('build') {
            steps {
-               echo 'Notify GitLab'
-               updateGitlabCommitStatus name: 'test', state: 'pending'
-               echo 'test step goes here'
-               updateGitlabCommitStatus name: 'test', state: 'success'
-               echo 'hellow woreld'
-
+               echo 'Building project'
+           }
+       }       
+       stage('test') {
+           steps {
+               echo 'Testing project'
            }
        }
     }
