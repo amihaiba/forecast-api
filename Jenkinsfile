@@ -15,6 +15,7 @@ pipeline {
                updateGitlabCommitStatus name: 'test', state: 'pending'
                echo 'test step goes here'
                updateGitlabCommitStatus name: 'test', state: 'success'
+               echo 'hellow woreld'
 
            }
        }
