@@ -9,7 +9,8 @@ pipeline {
         stage('clean') {
             steps {
                 cleanWs()
-                sh 'docker stop $(docker ps -q) && docker rm $(docker ps -aq) && docker image prune -f'
+                sh 'if [[ -n $(docker ps -q) ]]; do docker stop $(docker ps -q) fi'
+                sh 'docker rm $(docker ps -aq) && docker image prune -f'
             }
         }
         stage('Fetch git repo') {
