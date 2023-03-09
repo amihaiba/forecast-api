@@ -17,7 +17,7 @@ pipeline {
         stage('build') {
             steps {
                 echo 'Building docker image'
-                echo 'Workspace: $env.WORKSPACE'
+                echo 'Workspace: ${env.WORKSPACE}'
                 dir(env.WORKSPACE+'/source-files/gunicorn') {
                     sh 'docker build -t forecast_api:latest .'
                 }
