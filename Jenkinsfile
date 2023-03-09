@@ -9,7 +9,7 @@ pipeline {
         stage('clean') {
             steps {
                 cleanWs()
-                sh 'if [[ -n $(docker ps -q) ]]; then docker stop $(docker ps -q) fi'
+                sh 'if [[ -n $(docker ps -q) ]]; then docker stop $(docker ps -q); fi'
                 sh 'docker rm $(docker ps -aq) && docker image prune -f'
             }
         }
