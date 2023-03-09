@@ -49,5 +49,8 @@ pipeline {
         failure {
             slackSend channel: "#devops-alerts", color: "danger", message: "Build amihaiba/forecast_api:${env.BUILD_NUMBER} failed!"
         }
+        always {
+            sh 'docker logout'
+        }
     }
  }
