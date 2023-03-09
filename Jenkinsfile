@@ -44,10 +44,10 @@ pipeline {
     }
     post {
         success {
-            slackSend channel: "#succeeded-built", color: "good", message: "Build ${env.JOB_NAME} ${env.BUILD_NUMBER} finished successfuly!"
+            slackSend channel: "#succeeded-build", color: "good", message: "Build ${env.JOB_NAME} ${env.BUILD_NUMBER} finished successfuly!"
         }
         failure {
-            slackSend channel: "#succeeded-built", color: "warning", message: "Build ${env.JOB_NAME} ${env.BUILD_NUMBER} failed!"
+            slackSend channel: "#devops-alerts", color: "warning", message: "Build ${env.JOB_NAME} ${env.BUILD_NUMBER} failed!"
         }
     }
  }
