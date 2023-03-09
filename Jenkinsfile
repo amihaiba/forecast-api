@@ -6,7 +6,7 @@ pipeline {
         stage('clean') {
             steps {
                 cleanWs()
-                sh 'docker stop $(docker ps) && docker rm $(docker ps -a)'
+                sh 'docker stop $(docker ps -q) && docker rm $(docker ps -aq)'
             }
         }
         stage('Fetch git repo') {
