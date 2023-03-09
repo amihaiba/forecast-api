@@ -2,11 +2,14 @@ pipeline {
     agent {
         label 'build-test'
     }
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+    }
     stages {
         stage('clean') {
             steps {
                 cleanWs()
-                sh 'docker stop $(docker ps -q) && docker rm $(docker ps -aq)'
+                sh 'docker stop $(docker ps -q) && docker rm $(docker ps -aq) && docker image prune -f'
             }
         }
         stage('Fetch git repo') {
@@ -31,6 +34,7 @@ pipeline {
         }
         stage('Push image to Docker hub') {
             steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                 echo 'Shtrudel'
             }
         }
