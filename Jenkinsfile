@@ -21,7 +21,7 @@ pipeline {
             steps {
                 echo "Workspace: ${env.WORKSPACE}"
                 dir(env.WORKSPACE+'/source-files/gunicorn') {
-                    sh 'docker build -t forecast_api:latest .'
+                    sh 'docker build -t amihaiba/forecast_api:latest .'
                 }
             }
         }
