@@ -31,6 +31,7 @@ pipeline {
         }
         stage('Push image to Docker hub') {
             steps {
+                echo 'Shtrudel'
             }
         }
     }
