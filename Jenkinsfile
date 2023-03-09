@@ -39,15 +39,16 @@ pipeline {
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                 sh "docker push amihaiba/forecast_api:${env.BUILD_NUMBER}"
                 echo 'Shtrudel'
+                exit 1
             }
         }
     }
     post {
         success {
-            slackSend channel: "#succeeded-build", color: "good", message: "Build ${env.JOB_NAME} ${env.BUILD_NUMBER} finished successfuly!"
+            slackSend channel: "#succeeded-build", color: "good", message: "Build ${env.JOB_NAME}:${env.BUILD_NUMBER} finished successfuly!"
         }
         failure {
-            slackSend channel: "#devops-alerts", color: "warning", message: "Build ${env.JOB_NAME} ${env.BUILD_NUMBER} failed!"
+            slackSend channel: "#devops-alerts", color: "warning", message: "Build ${env.JOB_NAME}:${env.BUILD_NUMBER} failed!"
         }
     }
  }
