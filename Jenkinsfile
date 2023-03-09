@@ -32,7 +32,6 @@ pipeline {
                 dir(env.WORKSPACE+'/source-files') {
                     sh 'docker-compose up -d'
                 }
-                exit 0
             }
         }
         stage('Push image to Docker hub') {
