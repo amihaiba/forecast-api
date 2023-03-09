@@ -25,6 +25,9 @@ pipeline {
         stage('test') {
             steps {
                 echo 'Testing project'
+                dir(env.WORKSPACE) {
+                    sh 'docker-compose up -d'
+                }
             }
         }
     }
