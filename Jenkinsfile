@@ -16,7 +16,10 @@ pipeline {
         }
         stage('build') {
             steps {
-                echo 'Building project'
+                echo 'Building docker image'
+                dir(env.WORKSPACE) {
+                    sh 'docker build -t forecast_api:latest .'
+                }
             }
         }       
         stage('test') {
