@@ -21,7 +21,10 @@ services:
     depends_on:
       - gunicorn1
       - gunicorn2
-      
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/nginx-certificate.crt:/etc/nginx/certificate/nginx-certificate.crt
+      - ./nginx/nginx.key:/etc/nginx/certificate/nginx.key
+
 networks:
   forecast-app:
-    

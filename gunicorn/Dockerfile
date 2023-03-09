@@ -1,11 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM ubuntu:20.04
-
-LABEL "ws"="Containers - Docker"
-LABEL "exercise"="24"
-
-RUN apt-get update && apt-get -y upgrade && apt-get install -y python3 \
-&& apt-get install -y python3-pip
+FROM python:3.8.16-slim
 
 WORKDIR /usr/src/forecast_api
 COPY . .
