@@ -35,6 +35,7 @@ pipeline {
         stage('Push image to Docker hub') {
             steps {
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh 'docker push amihaiba/forecast_api:latest'
                 echo 'Shtrudel'
             }
         }
