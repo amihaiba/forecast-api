@@ -4,7 +4,9 @@ pipeline {
     }
     stages {
         stage('clean') {
-            cleanWs()
+            steps {
+                cleanWs()
+            }
         }
         stage('git') {
             steps {
