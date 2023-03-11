@@ -8,6 +8,7 @@
 !/*.html
 !/*.txt
 !/*.conf
+!/*.deletethis
 
 # Blacklist
 .idea/

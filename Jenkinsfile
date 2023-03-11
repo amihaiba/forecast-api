@@ -2,33 +2,55 @@ pipeline {
     agent {
         label 'build-test'
     }
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+    }
     stages {
         stage('clean') {
             steps {
                 cleanWs()
+                sh 'if [[ -n $(docker ps -q) ]]; then docker stop $(docker ps -q); fi'
+                sh 'if [[ -n $(docker ps -aq) ]]; then docker rm $(docker ps -aq); fi'
+                sh 'docker image prune -f'
             }
         }
-        stage('git') {
+        stage('Fetch git repo') {
             steps {
-                echo 'Fetching git repo'
-                git credentialsId: '45551286-fc7b-437b-a6e2-f67305b09ff1', url: 'http://3.88.102.122/gitlab-instance-d4e39dbd/forecast_api'
+                git credentialsId: '45551286-fc7b-437b-a6e2-f67305b09ff1', url: 'http://172.31.22.73/gitlab-instance-d4e39dbd/forecast_api'
             }
         }
-        stage('build') {
+        stage('Build docker image') {
             steps {
-                echo 'Building docker image'
-                dir(env.WORKSPACE+'/gunicorn') {
-                    sh 'docker build -t forecast_api:latest .'
+                echo "Workspace: ${env.WORKSPACE}"
+                dir(env.WORKSPACE+'/source-files/gunicorn') {
+                    sh "docker build -t amihaiba/forecast_api:${env.BUILD_NUMBER} ."
                 }
             }
-        }       
-        stage('test') {
+        }
+        stage('Test container') {
             steps {
-                echo 'Testing project'
-                dir(env.WORKSPACE) {
+                dir(env.WORKSPACE+'/source-files') {
                     sh 'docker-compose up -d'
                 }
             }
+        }
+        stage('Push image to Docker hub') {
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh "docker push amihaiba/forecast_api:${env.BUILD_NUMBER}"
+                echo 'Shtrudel'
+            }
+        }
+    }
+    post {
+        success {
+            slackSend channel: "#succeeded-build", color: "good", message: "Build amihaiba/forecast_api:${env.BUILD_NUMBER} finished successfuly!"
+        }
+        failure {
+            slackSend channel: "#devops-alerts", color: "danger", message: "Build amihaiba/forecast_api:${env.BUILD_NUMBER} failed!"
+        }
+        always {
+            sh 'docker logout'
         }
     }
  }
