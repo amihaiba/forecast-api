@@ -32,6 +32,9 @@ pipeline {
                 dir(env.WORKSPACE+'/source-files') {
                     sh 'docker-compose up -d'
                 }
+                dir(env.WORKSPACE+'/tests') {
+                    sh 'pytest'
+                }
             }
         }
         stage('Push image to Docker hub') {
