@@ -44,7 +44,7 @@ pipeline {
     }
     post {
         success {
-            slackSend channel: "#succeeded-build", color: "good", message: "Build amihaiba/forecast_api:${env.BUILD_NUMBER} finished successfuly!"
+            slackSend channel: "#succeeded-build", color: "good", message: "Build amihaiba/forecast_api:${env.BUILD_NUMBER} finished successfuly! (<${env.BUILD_URL}|Open>)"
         }
         failure {
             slackSend channel: "#devops-alerts", color: "danger", message: "Build amihaiba/forecast_api:${env.BUILD_NUMBER} failed!"
