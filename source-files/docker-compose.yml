@@ -1,8 +1,8 @@
 version: "3.8"
 services:  
-
   gunicorn1:
-    build: ./gunicorn
+#    build: ./gunicorn
+    build: amihaiba/forecast_api:${env.BUILD_NUMBER}
     networks:
       - forecast-app
 
@@ -12,7 +12,7 @@ services:
       - forecast-app
 
   nginx:
-    build: ./nginx
+    image: "nginx:alpine"
     ports:
       - "80:80"
       - "443:443"
