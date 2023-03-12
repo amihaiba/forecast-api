@@ -33,7 +33,7 @@ pipeline {
                     sh 'docker-compose up -d'
                 }
                 dir(env.WORKSPACE+'/tests') {
-                    sh 'pytest'
+                    sh '/home/ec2-user/.local/bin/pytest'
                 }
             }
         }
