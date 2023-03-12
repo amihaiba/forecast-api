@@ -30,7 +30,7 @@ pipeline {
         stage('Test container') {
             steps {
                 dir(env.WORKSPACE+'/source-files') {
-                    sh 'BUILD_NUMBER=${env.BUILD_NUMBER}
+                    sh 'BUILD_NUMBER=${env.BUILD_NUMBER}'
                     sh 'docker-compose up -d'
                 }
                 dir(env.WORKSPACE+'/tests') {
