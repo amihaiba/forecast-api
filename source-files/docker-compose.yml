@@ -2,7 +2,7 @@ version: "3.8"
 services:  
   gunicorn1:
 #    build: ./gunicorn
-    build: amihaiba/forecast_api:${env.BUILD_NUMBER}
+    build: amihaiba/forecast_api:${BUILD_NUMBER}
     networks:
       - forecast-app
 
