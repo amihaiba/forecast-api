@@ -1,0 +1,13 @@
+# Ingore all files
+#*
+
+# Whitelist
+!/*.dockerignore
+!/*.py
+!/*.sh
+!/*.html
+!/*.txt
+!/*.conf
+
+# Blacklist
+.idea/

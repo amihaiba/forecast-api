@@ -3,17 +3,26 @@
 # Code review :
 # Description : A Flask program which uses a weather and geocoding API to return the weather forecast
 #             : of the next 7 days in a given location
-from flask import Flask, render_template, request
+import logging
+from flask import Flask, render_template, request, send_file, Response, redirect
+import boto3
+from botocore.exceptions import ClientError
 from datetime import date, timedelta
 import requests
+import io
 app = Flask(__name__)
-forecast_dict = {}
+
+time_now = None
+status = None
+location = None
+country = None
+forecast = None
 
 
-def get_coords(location):
-    """Get the location coordinates, aswell as the country name and matched location"""
+def get_coords(input_location):
+    """Get the location coordinates, as well as the country name and matched location"""
     url = "https://geocoding-api.open-meteo.com/v1/search"
-    params = {"name": location, "count": 1}
+    params = {"name": input_location, "count": 1}
     data = requests.get(url, params)
     if data.status_code == 200 and "results" in data.text:
         data = data.json()
@@ -27,6 +36,7 @@ def get_coords(location):
 
 def get_forecast(lat, lon):
     url = "https://api.open-meteo.com/v1/forecast"
+    global time_now
     time_now = date.today()
     params = {"latitude": lat,
               "longitude": lon,
@@ -41,6 +51,7 @@ def get_forecast(lat, lon):
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
+    global status, location, country, forecast
     if request.method == 'GET':
         return render_template("index.html", status=-1)
     elif request.method == 'POST':
@@ -56,6 +67,41 @@ def index():
                                title=title,
                                forecast=forecast
                                )
+
+
+@app.route("/download", methods=['GET'])
+def download_file():
+    s3 = boto3.client('s3',
+                      aws_access_key_id='AKIAUEZE5XNIEIYV36NK',
+                      aws_secret_access_key='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'
+                      )
+    try:
+        url = s3.generate_presigned_url(ClientMethod='get_object',
+                                        Params={'Bucket': 'www.amihaiba-website.co.il',
+                                                'Key': 'fluffy-cloud-clipart.jpeg',
+                                                'ResponseContentDisposition': 'attachment'
+                                                },
+                                        ExpiresIn=60
+                                        )
+        print(url)
+        return redirect(url)
+    except ClientError as e:
+        logging.error(e)
+        return None
+
+
+@app.route('/dynamodb', methods=['GET'])
+def insert_to_db():
+    dynamodb = boto3.resource('dynamodb',)
+    table = dynamodb.Table('forecast_api-entries')
+    table.put_item(
+        Item={
+            'Location': str(location),
+            'Date': str(time_now),
+            'Forecast': str(forecast)
+        }
+    )
+    return redirect('/')
 
 
 if __name__ == "__main__":
