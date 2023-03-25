@@ -1,13 +1,14 @@
 version: "3.8"
 services:  
   gunicorn1:
-#    build: ./gunicorn
-    image: "amihaiba/forecast_api:latest"
+    build: ./gunicorn
+#    image: "amihaiba/forecast_api:latest"
     networks:
       - forecast-app
 
   gunicorn2:
-    image: "amihaiba/forecast_api:latest"
+	build: ./gunicorn
+#    image: "amihaiba/forecast_api:latest"
     networks:
       - forecast-app
 
