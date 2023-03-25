@@ -1,0 +1,40 @@
+pipeline {
+    agent {
+        label 'production'
+    }
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+    }
+    stages {
+        stage('clean') {
+            steps {
+                cleanWs()
+                sh 'if [[ -n $(docker ps -q) ]]; then docker stop $(docker ps -q); fi'
+                sh 'if [[ -n $(docker ps -aq) ]]; then docker rm $(docker ps -aq); fi'
+                sh 'docker image prune -f'
+            }
+        }
+        stage('Pull image from Docker hub') {
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh "docker pull amihaiba/forecast_api:${env.BUILD_NUMBER}"
+            }
+        }
+        stage('Start container') {
+        	steps {
+        		sh '
+        	}
+        }
+    }
+//    post {
+//        success {
+//            slackSend channel: "#succeeded-build", color: "good", message: "Build amihaiba/forecast_api:${env.BUILD_NUMBER} finished successfuly!"
+//        }
+//        failure {
+//            slackSend channel: "#devops-alerts", color: "danger", message: "Build amihaiba/forecast_api:${env.BUILD_NUMBER} failed!"
+//        }
+//        always {
+//            sh 'docker logout'
+//        }
+//    }
+ }

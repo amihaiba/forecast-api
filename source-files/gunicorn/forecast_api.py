@@ -4,19 +4,18 @@
 # Description : A Flask program which uses a weather and geocoding API to return the weather forecast
 #             : of the next 7 days in a given location
 import logging
-from flask import Flask, render_template, request, send_file, Response, redirect
+from flask import Flask, render_template, request, redirect
 import boto3
 from botocore.exceptions import ClientError
 from datetime import date, timedelta
 import requests
-import io
 app = Flask(__name__)
 
 time_now = None
-status = None
-location = None
-country = None
-forecast = None
+status = 0
+location = ""
+country = ""
+forecast = []
 
 
 def get_coords(input_location):
@@ -92,6 +91,7 @@ def download_file():
 
 @app.route('/dynamodb', methods=['GET'])
 def insert_to_db():
+    global status, country, location, forecast, time_now
     dynamodb = boto3.resource('dynamodb',)
     table = dynamodb.Table('forecast_api-entries')
     table.put_item(
@@ -101,9 +101,14 @@ def insert_to_db():
             'Forecast': str(forecast)
         }
     )
-    return redirect('/')
+
+    title = location + ', ' + country + ' | ' + time_now.strftime("%A, %-d/%-m")
+    return render_template("index.html",
+                           status=status,
+                           title=title,
+                           forecast=forecast
+                           )
 
 
 if __name__ == "__main__":
     app.run(debug=True)
-
