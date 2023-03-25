@@ -3,10 +3,7 @@
 # Code review :
 # Description : A Flask program which uses a weather and geocoding API to return the weather forecast
 #             : of the next 7 days in a given location
-import logging
-from flask import Flask, render_template, request, redirect
-import boto3
-from botocore.exceptions import ClientError
+from flask import Flask, render_template, request
 from datetime import date, timedelta
 import requests
 app = Flask(__name__)
@@ -66,48 +63,6 @@ def index():
                                title=title,
                                forecast=forecast
                                )
-
-
-@app.route("/download", methods=['GET'])
-def download_file():
-    s3 = boto3.client('s3',
-                      aws_access_key_id='AKIAUEZE5XNIEIYV36NK',
-                      aws_secret_access_key='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'
-                      )
-    try:
-        url = s3.generate_presigned_url(ClientMethod='get_object',
-                                        Params={'Bucket': 'www.amihaiba-website.co.il',
-                                                'Key': 'fluffy-cloud-clipart.jpeg',
-                                                'ResponseContentDisposition': 'attachment'
-                                                },
-                                        ExpiresIn=60
-                                        )
-        print(url)
-        return redirect(url)
-    except ClientError as e:
-        logging.error(e)
-        return None
-
-
-@app.route('/dynamodb', methods=['GET'])
-def insert_to_db():
-    global status, country, location, forecast, time_now
-    dynamodb = boto3.resource('dynamodb',)
-    table = dynamodb.Table('forecast_api-entries')
-    table.put_item(
-        Item={
-            'Location': str(location),
-            'Date': str(time_now),
-            'Forecast': str(forecast)
-        }
-    )
-
-    title = location + ', ' + country + ' | ' + time_now.strftime("%A, %-d/%-m")
-    return render_template("index.html",
-                           status=status,
-                           title=title,
-                           forecast=forecast
-                           )
 
 
 if __name__ == "__main__":

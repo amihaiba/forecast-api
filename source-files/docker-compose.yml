@@ -7,8 +7,7 @@ services:
       - forecast-app
 
   gunicorn2:
-	build: ./gunicorn
-#    image: "amihaiba/forecast_api:latest"
+    build: ./gunicorn
     networks:
       - forecast-app
 
