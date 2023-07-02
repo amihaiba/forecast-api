@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 # Base image
-FROM python:3.8.16-slim
+FROM arm32v7/python:3.8.16-slim
 # Set app directory
 WORKDIR /usr/share/forecast-api
 RUN useradd -r -g users user && chown user:users /usr/share/forecast-api

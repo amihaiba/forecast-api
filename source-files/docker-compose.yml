@@ -1,15 +1,15 @@
 version: "3.8"
 services:  
   gunicorn1:
-    build: ./gunicorn
-#    image: "amihaiba/forecast_api:latest"
+#    build: ./gunicorn
+    image: "amihaiba/forecast_api:1.1.2"
     networks:
       - forecast-app
 
-  gunicorn2:
-    build: ./gunicorn
-    networks:
-      - forecast-app
+#  gunicorn2:
+#    image: "amihaiba/forecast_api:1.1.2"
+#    networks:
+#      - forecast-app
 
   nginx:
     image: "nginx:alpine"

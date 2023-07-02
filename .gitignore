@@ -12,4 +12,8 @@
 !Jenkinsfile
 
 # Blacklist
+secret.txt
 .idea/
+venv
+__pycache__
+.pytest_cache

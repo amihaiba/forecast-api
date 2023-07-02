@@ -1,0 +1,13 @@
+# Ignore all
+*
+
+# Whitelist
+!*.py
+!templates
+!Dockerfile
+!requirements.txt
+!.dockerignore
+!*.json
+
+venv
+.idea
