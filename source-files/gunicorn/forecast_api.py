@@ -34,8 +34,14 @@ record = {"status": 0,
           "country": "",
           "forecast": None
           }
-bg_color = os.environ["BG_COLOR"] || "primary"
-app_path = os.environ["APP_PATH"] || "forecast-api"
+if os.environ.get("APP_PATH") is None:
+    app_path = "forecast-api"
+else:
+    app_path = os.environ.get("APP_PATH")
+if os.environ.get("BG_COLOR") is None:
+    bg_color = "primary"
+else:
+    bg_color = os.environ.get("BG_COLOR")
 
 # Prometheus' metrics collected as a dictionary
 graphs = {'count_visits': Counter('app_visit_operations_total', 'Number of times app has been visited'),
