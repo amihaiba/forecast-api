@@ -136,8 +136,8 @@ def download_file():
     # Prometheus metric to track the number of times an image has been attempted to be downloaded
     graphs['count_images'].inc()
     s3 = boto3.client('s3',
-                      aws_access_key_id='AKIAUEZE5XNIEIYV36NK',
-                      aws_secret_access_key='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'
+                      aws_access_key_id='AWS_ACCESS_KEY_ID',
+                      aws_secret_access_key='AWS_SECRET_ACCESS_KEY'
                       )
     try:
         url = s3.generate_presigned_url(ClientMethod='get_object',
