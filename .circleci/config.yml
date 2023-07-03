@@ -35,7 +35,7 @@ jobs:
           # pip-dependency-file: test-requirements.txt  # if you have a different name for your requirements file, maybe one that combines your runtime and test requirements.
       - run:
           name: Start app
-          command: nohup python3 source-files/gunicorn/wsgi.py &
+          command: gunicorn --workers 1 --daemon -b localhost:5000 wsgi:app
       - run:
           name: Run tests
           # This assumes pytest is installed via the install-package step above
