@@ -7,7 +7,7 @@ import requests
 
 def test_reachable():
     # response = requests.get('https://localhost', verify=False)
-    response = requests.get('http://localhost')
+    response = requests.get('http://localhost:5000')
     assert 200 <= response.status_code <= 299
 
 
